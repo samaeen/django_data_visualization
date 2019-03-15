@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load staticfiles %}
+
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js'></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js'></script>
+
+<div class="text-center">
+	<h2>Wikipedia API</h2>
+	  <form method="get">
+	  	<div class="form-group">
+	    	<p><input type="text" name="search"></p>
+	    	<p><button type="submit" class="btn btn-secondary">search on wikipedia</button></p>
+	    </div>
+	  </form>
+	  	
+	  	<p>{{pageTitle}} {{pageExist}}</p>
+	  	<p>{{pageSummary}}</p>
+	  	<!--<p>
+			{% for links in pageLinks %}
+			 {{ links }}___
+			{% endfor %}
+	  	</p>-->
+	
+</div>
+{% endblock content %}
