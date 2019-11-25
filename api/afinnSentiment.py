@@ -1,7 +1,7 @@
 import json
 import re
 
-text='hello are you okay?Are you happy.are you sad.'
+text='hello are you okay?Are you happy.are you sad.happy happy'
 
 
 with open('afinn111.json') as f:
@@ -10,7 +10,6 @@ with open('afinn111.json') as f:
 words=re.split(r'[.,?\s]+', text)
 #words = re.findall(r'\w+', text)
 
-print(int(data['prison'])+int(data['sad']))
 sentiment=0
 for i in range(len(words)):
 	if words[i] in data:
