@@ -6,6 +6,8 @@
 
 <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js'></script>
 <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js'></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
 
 <div class="text-center">
 	<h2>Wikipedia API</h2>
@@ -19,6 +21,7 @@
 	  	<p>{{pageTitle}} {{pageExist}}</p>
 	  	<p>{{pageSummary}}</p>
 	  	<p>{{wordCounter}}</p>
+	  	<p>{{wordKeys}}</p>
 	  	<!--<p>
 			{% for links in pageLinks %}
 			 {{ links }}___
@@ -26,4 +29,51 @@
 	  	</p>-->
 	
 </div>
+<div class="cloud"></div>
+<script type="text/javascript">
+	var wordVal=JSON.parse("{{wordCounter|escapejs}}");
+
+	console.log(Object.keys(wordVal))
+	bull=[['Bigo',1.0],
+    ['rigooooo',0.848167539267],
+    ['your',0.82722513089],
+    ['not',0.759162303665],
+    ['have',0.685863874346],
+    ['today',0.638743455497],
+    ['hai', 0.623036649215],
+    ['eventbrite',0.591623]
+];
+words=d3.json(wordVal, function(error, data){
+	d3.layout.cloud()
+    .size([600, 600])
+    .words(data
+        .map(function(d) {
+            return {text: d[0], size: d[1] * 10};}))
+        .padding(5)
+        .rotate(function() { return ~~(Math.random() * 0) * 90; })
+        .font("Impact")
+        .fontSize(function(d) { return d.size; })
+        .on("end", draw)
+        .start();
+});
+function draw(words) {
+    d3.select(".cloud").append("svg")
+    .attr("width", 600)
+    .attr("height", 600)
+    .append("g")
+    .attr("transform", "translate(300,300)")
+    .selectAll("text")
+    .data(words)
+    .enter().append("text")
+    .style("font-size", function(d) { return d.size + "px"; })
+    .style("font-family", "Impact")
+    .style("fill","red")
+    .attr("text-anchor", "middle")
+    .attr("transform", function(d) {
+        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+    })
+    .text(function(d) { return d.text; });
+}
+
+</script>
 {% endblock content %}

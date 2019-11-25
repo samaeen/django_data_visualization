@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import wikipediaapi
 from api import wordCounter
+import json
 
 
 # Create your views here.
@@ -24,10 +25,13 @@ def wiki(request):
 					 "pageTitle":page.title,
 					 "pageSummary":page.summary[0:2000],
 					 "pageLinks":availableLinks,
-					 "wordCounter":wordCounter.wordCounter(page.summary[0:2000]),}
+					 "wordValues":list(wordCounter.wordCounter(page.summary[0:2000]).values()),
+					 "wordKeys":list(wordCounter.wordCounter(page.summary[0:2000]).keys()),
+					 "wordCounter":json.dumps(wordCounter.wordCounter(page.summary[0:2000])),}
 		else:
 			context={"pageExist":"Invalid Search"}
 	else:
 		context={"pageExist":"Page Does not Exist"}
 
 	return render(request,'api/wiki.html',context)
+
